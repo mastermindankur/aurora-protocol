@@ -190,10 +190,84 @@ Copyright Notice
 
 5. Security Considerations
 
-   The combination of the HAPCHA microsecond speed gate and remote hardware 
-   attestation effectively shields the connection from Relay and Playback 
-   attacks. If a malicious network observer steals a valid hardware token, 
-   replaying it outside the initial time-to-live window triggers a system 
-   fault, dropping the hijacked traffic before parsing the sensitive 
-   authority layer.
+   The dual-layer architecture of AURORA introduces unique security 
+   guarantees, but its reliance on precise microsecond timing and 
+   hardware-bound cryptography necessitates strict safeguards against 
+   advanced attack vectors.
+
+5.1. Clock Synchronization and Drift Vulnerabilities
+
+   The HAPCHA challenge-response mechanism relies on high-resolution 
+   microsecond timestamps to enforce the 50-millisecond execution gate. 
+   If the target gateway and the connecting agent experience clock 
+   drift, legitimate connections may be erroneously dropped (False 
+   Positives), or attackers may exploit a synchronization window to 
+   bypass the gate.
+
+   To mitigate this, implementations MUST enforce strict network time 
+   synchronization using high-precision protocols such as the Precision 
+   Time Protocol (PTP, IEEE 1588) or authenticated Network Time Protocol 
+   (NTPv4, RFC 5905). The gateway MUST continuously calibrate its local 
+   clock and negotiate an acceptable jitter margin with connecting enclaves 
+   during the initial session handshakes.
+
+5.2. Enclave Compromise and Trusted Computing Base (TCB) Recovery
+
+   Hardware enclaves (Trusted Execution Environments) are subject to 
+   physical side-channel attacks (e.g., transient execution or power 
+   analysis exploits). If an attacker compromises a specific silicon chip, 
+   they can extract the private attestation key and forge Layer 1 proofs 
+   using a standard software script.
+
+   To address this, AURORA validators MUST query the chip manufacturer's 
+   directory (e.g., Intel PCS or AMD ASVK) during the verification phase 
+   to check the revocation status of the host CPU's signing keys. If the 
+   host processor has not undergone the required Trusted Computing Base 
+   (TCB) firmware patches to close known hardware exploits, the gateway 
+   MUST reject the attestation report, dropping the connection 
+   immediately.
+
+5.3. Delegated Token Revocation (The "Runaway Agent" Scenario)
+
+   If an autonomous agent experiences a logical loop, context injection 
+   exploit, or is otherwise compromised, the human principal must have 
+   the ability to instantly revoke its operational mandate before its 
+   Delegated Authority Token (DAT) chronologically expires.
+
+   V-GAPA/AURORA implementations MUST support real-time token revocation 
+   queries. Gateways verify the DAT against a Decentralized Revocation 
+   Registry (DRR) or an on-chain smart contract accumulator. If a token's 
+   unique hash is flagged as revoked, the gateway terminates the raw 
+   JSON-stream instantly, stopping any outbound financial or structural 
+   contracts from executing mid-session.
+
+5.4. Handshake Resource Exhaustion (Denial of Service)
+
+   Because generating cryptographic enclave signatures and validating 
+   complex math puzzles require heavy computational overhead, malicious 
+   actors could flood the HAPCHA gate with fake handshake requests. 
+   This would consume the gateway's CPU resources, resulting in a 
+   Denial-of-Service (DoS) state for legitimate AI agents.
+
+   To defend against this, gateways MUST implement a lightweight, 
+   stateless Proof-of-Work (PoW) cookie (similar to TCP Syn Cookies) 
+   during the initiation phase. The connecting agent must solve a 
+   trivial, low-compute hash challenge before the server commits CPU 
+   resources to generate the microsecond-timed HAPCHA nonce.
+
+5.5. Ephemeral Session Hijacking (Post-Handshake Protections)
+
+   Once the dual-layer handshake is successfully verified and the 
+   gateway switches to the raw JSON-stream, there is a risk of session 
+   hijacking. An attacker sitting on the local network could spoof the 
+   IP or TCP sequence numbers to inject malicious commands into the 
+   active high-speed stream.
+
+   To prevent session takeover, the cryptographic keys generated inside 
+   the hardware enclave (Layer 1) MUST be used to establish a secure, 
+   fully authenticated Transport Layer Security (TLS 1.3) tunnel. Every 
+   data packet transmitted in the subsequent raw JSON-stream must be 
+   encrypted and signed using ephemeral session keys tied directly to the 
+   initial hardware-attested handshake.
+
 ```
