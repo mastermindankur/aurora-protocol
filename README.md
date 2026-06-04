@@ -8,7 +8,7 @@ AURORA solves both **The Puppet Problem** and **The Rogue Agent Problem** simult
 
 ---
 
-## 📢 Call for Collaboration & RFC Review
+## Call for Collaboration & RFC Review
 This project is currently being drafted as an **IETF Internet-Draft (Standards Track)**. We are seeking core contributors, systems architects, cybersecurity researchers, and AI engineers to find edge cases, refine the cryptographic schemas, and help build the reference implementation.
 
 * **Status:** Pre-RFC / Alpha Draft 00
