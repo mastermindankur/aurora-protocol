@@ -179,7 +179,7 @@ Copyright Notice
 
   o  Detailed Schema Specification: For a complete breakdown of the
      Delegated Authority Token payload, cryptographic claims structure, and
-     validation lifecycle, refer to the [Detailed DAT Specification](docs/DAT-SPECIFICATION.md).
+     validation lifecycle, refer to the `[Detailed DAT Specification](docs/DAT-SPECIFICATION.md)`.
 
 4. Interoperability & System Optimization
 
