@@ -270,4 +270,40 @@ Copyright Notice
    encrypted and signed using ephemeral session keys tied directly to the 
    initial hardware-attested handshake.
 
+5.6. Cognitive Puppeteering and Semantic Jailbreaks (Autonomy Vulnerability)
+
+   While Layer 1 remote attestation validates the software execution 
+   integrity of the host LLM within a physical enclave, it does not 
+   inherently protect the model against semantic input manipulation 
+   such as prompt injection, jailbreaking, or adversarial adversarial 
+   context injection. A verified hardware enclave will faithfully execute 
+   and sign malicious actions if the agent's cognitive engine has been 
+   hijacked.
+
+   To mitigate this "cognitive puppet" exploit, AURORA mandates that the 
+   enclave's measured software state (MRENCLAVE / PCR registers) MUST 
+   encompass the hash of the system prompts, model weight matrices, and 
+   the immutable input-filtering binaries. Gateways MUST reject any 
+   attestation payload where the Measured Configuration State deviates 
+   from the baseline security policies, preventing hijacked cognitive 
+   runtimes from signing operational outputs.
+
+5.7. Cryptographic Cross-Layer Token Binding (Authority Vulnerability)
+
+   If an attacker intercepts a valid Delegated Authority Token (DAT) 
+   issued by a principal, they may attempt to replay it on a standard, 
+   non-enclaved host script, detaching the legal authorization from the 
+   hardware safety parameters.
+
+   AURORA prevents token detachment through absolute Cross-Layer Binding. 
+   When a principal issues a DAT, the token payload MUST contain a 
+   cryptographic claim that binds the token explicitly to the specific 
+   Attestation Identity Public Key (AIK) generated natively inside the 
+   target agent's hardware enclave. During verification, the target gateway 
+   MUST verify that the private key signing the Layer 1 HAPCHA challenge is 
+   the mathematical match of the bound public key inside the Layer 2 DAT. 
+   An authority token executed on an unauthorized or compromised hardware 
+   platform triggers an instant signature mismatch failure, dropping the 
+   payload.
+
 ```
