@@ -47,13 +47,30 @@ Abstract
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
-   provisions of BCP 78 and BCP 79. Internet-Drafts are working 
-   documents of the Internet Engineering Task Force (IETF).
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at [https://datatracker.ietf.org/doc/active/](https://datatracker.ietf.org/doc/active/).
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
 
 Copyright Notice
 
    Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors. All rights reserved.
+
+Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
 1. Introduction
 
@@ -77,8 +94,8 @@ Copyright Notice
 2.1. Problem Statement 1: The Puppet Problem (Autonomy Vulnerability)
 
    Current network endpoints cannot differentiate between a genuinely 
-   autonomous, hardware-isolated AI agent and a human adversary utilizing 
-   automated scripts to mimic a machine ("puppeteering"). 
+   autonomous, hardware-isolated AI agent and a human adversary 
+   utilizing automated scripts to mimic a machine ("puppeteering"). 
 
    Without a mechanism to prove machine execution, systems are exposed 
    to highly advanced Sybil attacks, data interception, and man-in-the-
@@ -97,9 +114,9 @@ Copyright Notice
 
    If an agent suffers a logical loop or context injection and executes 
    an unauthorized asset transfer, the receiving server cannot trace 
-   legal accountability. The internet has no standardized, cryptographically 
-   attenuated "Power of Attorney" token designed for software-mediated 
-   delegation.
+   legal accountability. The internet has no standardized, 
+   cryptographically attenuated "Power of Attorney" token designed 
+   for software-mediated delegation.
 
 3. The AURORA Solution: Dual-Layer Protocol Specification
 
@@ -137,49 +154,48 @@ Copyright Notice
    strict, hardware-verified computational challenge:
 
    o  The Humans Apart Proof for Computers and Humans Alike (HAPCHA) 
-      Challenge: Upon initial session request, the target gateway generates 
-      a cryptographic, single-use random value (Nonce) stamped with a 
-      precise microsecond Unix time-to-live (TTL). The incoming endpoint 
-      must process the payload, resolve the execution step, and return the 
-      response within an authoritative 50-millisecond threshold. This 
-      stringent restriction drops connections subjected to human typing, 
-      manual routing, or interceptive inspection.
+      Challenge: Upon initial session request, the target gateway 
+      generates a cryptographic, single-use random value (Nonce) 
+      stamped with a precise microsecond Unix time-to-live (TTL). The 
+      incoming endpoint MUST process the payload, resolve the execution 
+      step, and return the response within an authoritative 50-
+      millisecond threshold. This stringent restriction drops 
+      connections subjected to human typing, manual routing, or 
+      interceptive inspection.
 
    o  Hardware Enclave Co-Signing: The AI model's runtime environment 
-      must execute within a physically isolated hardware security enclave 
-      (Trusted Execution Environment / Confidential Computing). The enclave 
-      chip signs the output payload natively, anchoring the data directly 
-      to the physical hardware and proving that zero human user-space 
-      manipulation occurred during generation.
+      MUST execute within a physically isolated hardware security 
+      enclave (Trusted Execution Environment / Confidential Computing). 
+      The enclave chip signs the output payload natively, anchoring the 
+      data directly to the physical hardware and proving that zero human 
+      user-space manipulation occurred during generation.
 
 3.3. Architecture Layer 2: Authority Attestation (Mitigating Problem 2)
 
-   Once machine execution is validated by Layer 1, the agent must 
-   present its explicit operational boundaries to bind legal accountability:
+   Once machine execution is validated by Layer 1, the agent MUST 
+   present its explicit operational boundaries to bind legal 
+   accountability:
 
-   o  The Delegated Authority Token (DAT): The agent passes an immutable, 
-      cryptographically signed token originated directly by its human 
-      principal or corporate legal entity.
+   o  The Delegated Authority Token (DAT): The agent passes an 
+      immutable, cryptographically signed token originated directly by 
+      its human principal or corporate legal entity.
 
-   o  Scope Attenuation Claims: The DAT payload enforces rigid operational 
-      boundaries that the gateway acts upon to restrict usage:
+   o  Scope Attenuation Claims: The DAT payload enforces rigid 
+      operational boundaries that the gateway acts upon to restrict 
+      usage:
       
-      * Principal Identifier: The verifiable wallet address or corporate 
-         public key of the entity ultimately bearing transaction liability.
+      - Principal Identifier: The verifiable wallet address or corporate 
+        public key of the entity ultimately bearing transaction liability.
       
-      * Financial Allocation Limit: The maximum capital allocation 
-         (e.g., expressed in micro-denominations of currency or gas units) 
-         the machine is authorized to spend per transaction or session window.
+      - Financial Allocation Limit: The maximum capital allocation 
+        (e.g., expressed in micro-denominations of currency or gas units) 
+        the machine is authorized to spend per transaction or session.
       
-      * Functional Permitted Contexts: An immutable array restricting 
-         allowed API calls or tool pathways (e.g., `Read_Data`, `Execute_Trade`).
+      - Functional Permitted Contexts: An immutable array restricting 
+        allowed API pathways (e.g., `Read_Data`, `Execute_Trade`).
       
-      * Chronological Ceiling: A hard timestamp cutoff requiring a full 
-         token re-issuance from the human principal upon expiration.
----
-
-> 📘 **Technical Reference Document**
-> For a complete breakdown of the Delegated Authority Token payload, cryptographic claims structure, and validation lifecycle, refer to the [Detailed DAT Specification](docs/DAT-SPECIFICATION.md).
+      - Chronological Ceiling: A hard timestamp cutoff requiring a full 
+        token re-issuance from the human principal upon expiration.
 
 4. Interoperability & System Optimization
 
@@ -204,14 +220,13 @@ Copyright Notice
    The HAPCHA challenge-response mechanism relies on high-resolution 
    microsecond timestamps to enforce the 50-millisecond execution gate. 
    If the target gateway and the connecting agent experience clock 
-   drift, legitimate connections may be erroneously dropped (False 
-   Positives), or attackers may exploit a synchronization window to 
-   bypass the gate.
+   drift, legitimate connections may be erroneously dropped, or 
+   attackers may exploit a synchronization window to bypass the gate.
 
    To mitigate this, implementations MUST enforce strict network time 
    synchronization using high-precision protocols such as the Precision 
    Time Protocol (PTP, IEEE 1588) or authenticated Network Time Protocol 
-   (NTPv4, RFC 5905). The gateway MUST continuously calibrate its local 
+   (NTPv4, [RFC5905]). The gateway MUST continuously calibrate its local 
    clock and negotiate an acceptable jitter margin with connecting enclaves 
    during the initial session handshakes.
 
@@ -238,7 +253,7 @@ Copyright Notice
    the ability to instantly revoke its operational mandate before its 
    Delegated Authority Token (DAT) chronologically expires.
 
-   V-GAPA/AURORA implementations MUST support real-time token revocation 
+   AURORA implementations MUST support real-time token revocation 
    queries. Gateways verify the DAT against a Decentralized Revocation 
    Registry (DRR) or an on-chain smart contract accumulator. If a token's 
    unique hash is flagged as revoked, the gateway terminates the raw 
@@ -269,18 +284,18 @@ Copyright Notice
 
    To prevent session takeover, the cryptographic keys generated inside 
    the hardware enclave (Layer 1) MUST be used to establish a secure, 
-   fully authenticated Transport Layer Security (TLS 1.3) tunnel. Every 
-   data packet transmitted in the subsequent raw JSON-stream must be 
-   encrypted and signed using ephemeral session keys tied directly to the 
-   initial hardware-attested handshake.
+   fully authenticated Transport Layer Security (TLS 1.3, [RFC8446]) 
+   tunnel. Every data packet transmitted in the subsequent raw JSON-
+   stream MUST be encrypted and signed using ephemeral session keys tied 
+   directly to the initial hardware-attested handshake.
 
-5.6. Cognitive Puppeteering and Semantic Jailbreaks (Autonomy Vulnerability)
+5.6. Cognitive Puppeteering and Semantic Jailbreaks
 
    While Layer 1 remote attestation validates the software execution 
    integrity of the host LLM within a physical enclave, it does not 
    inherently protect the model against semantic input manipulation 
-   such as prompt injection, jailbreaking, or adversarial adversarial 
-   context injection. A verified hardware enclave will faithfully execute 
+   such as prompt injection, jailbreaking, or adversarial context 
+   injection. A verified hardware enclave will faithfully execute 
    and sign malicious actions if the agent's cognitive engine has been 
    hijacked.
 
@@ -292,7 +307,7 @@ Copyright Notice
    from the baseline security policies, preventing hijacked cognitive 
    runtimes from signing operational outputs.
 
-5.7. Cryptographic Cross-Layer Token Binding (Authority Vulnerability)
+5.7. Cryptographic Cross-Layer Token Binding
 
    If an attacker intercepts a valid Delegated Authority Token (DAT) 
    issued by a principal, they may attempt to replay it on a standard, 
@@ -303,11 +318,48 @@ Copyright Notice
    When a principal issues a DAT, the token payload MUST contain a 
    cryptographic claim that binds the token explicitly to the specific 
    Attestation Identity Public Key (AIK) generated natively inside the 
-   target agent's hardware enclave. During verification, the target gateway 
-   MUST verify that the private key signing the Layer 1 HAPCHA challenge is 
-   the mathematical match of the bound public key inside the Layer 2 DAT. 
-   An authority token executed on an unauthorized or compromised hardware 
-   platform triggers an instant signature mismatch failure, dropping the 
-   payload.
+   target agent's hardware enclave. During verification, the target 
+   gateway MUST verify that the private key signing the Layer 1 HAPCHA 
+   challenge is the mathematical match of the bound public key inside 
+   the Layer 2 DAT. An authority token executed on an unauthorized or 
+   compromised hardware platform triggers an instant signature 
+   mismatch failure, dropping the payload.
 
-```
+6. IANA Considerations
+
+   This document does not currently request any registry actions from 
+   IANA. Future revisions defining specific JSON Web Token (JWT) claim 
+   registrations for the Delegated Authority Token (DAT) will utilize 
+   the parameters established in RFC 7519.
+
+7. References
+
+7.1. Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              [https://www.rfc-editor.org/info/rfc2119](https://www.rfc-editor.org/info/rfc2119).
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174,
+              DOI 10.17487/RFC8174, May 2017,
+              [https://www.rfc-editor.org/info/rfc8174](https://www.rfc-editor.org/info/rfc8174).
+
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS)
+              Protocol Version 1.3", RFC 8446,
+              DOI 10.17487/RFC8446, August 2018,
+              [https://www.rfc-editor.org/info/rfc8446](https://www.rfc-editor.org/info/rfc8446).
+
+7.2. Informative References
+
+   [RFC5905]  Mills, D., Martin, J., Ed., Burbank, J., and W. Kasch,
+              "Network Time Protocol Version 4: Protocol and
+              Algorithms Specification", RFC 5905,
+              DOI 10.17487/RFC5905, June 2010,
+              [https://www.rfc-editor.org/info/rfc5905](https://www.rfc-editor.org/info/rfc5905).
+
+Author's Address
+
+   Ankur Khera
+   Email: ankur.khera@iitdalumni.com
