@@ -52,17 +52,29 @@ Status of This Memo
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at [https://datatracker.ietf.org/doc/active/](https://datatracker.ietf.org/doc/active/).
+   Drafts is at https://datatracker.ietf.org/doc/active/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
+   This Internet-Draft will expire on December 5, 2026.
+
 Copyright Notice
 
    Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors. All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document. Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document. Code Components extracted from this document must
+   include Revised BSD License text as described in Section 4.e of the
+   Trust Legal Provisions and are provided without warranty as described
+   in the Revised BSD License.
 
 Requirements Language
 
