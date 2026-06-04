@@ -176,10 +176,10 @@ Copyright Notice
       
       * Chronological Ceiling: A hard timestamp cutoff requiring a full 
          token re-issuance from the human principal upon expiration.
+---
 
-  o  Detailed Schema Specification: For a complete breakdown of the
-     Delegated Authority Token payload, cryptographic claims structure, and
-     validation lifecycle, refer to the [Detailed DAT Specification](docs/DAT-SPECIFICATION.md).
+> 📘 **Technical Reference Document**
+> For a complete breakdown of the Delegated Authority Token payload, cryptographic claims structure, and validation lifecycle, refer to the [Detailed DAT Specification](docs/DAT-SPECIFICATION.md).
 
 4. Interoperability & System Optimization
 
