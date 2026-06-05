@@ -8,11 +8,11 @@ AURORA solves both **The Puppet Problem** and **The Rogue Agent Problem** simult
 
 ---
 
-## ðŸŽ¯ The Core Trust Paradigm
+## 🎯 The Core Trust Paradigm
 
 > [!IMPORTANT]
 > **The Architectural Mandate:**
-> *â€œAn agent should be able to prove its authority, scope, and runtime integrity.â€�*
+> *"An agent should be able to prove its authority, scope, and runtime integrity."*
 
 ### What trust decision becomes possible with AURORA that is impossible without it?
 
@@ -30,7 +30,7 @@ AURORA enables a completely new paradigm for programmatic trust decisions:
 
 ---
 
-## ðŸ“¢ Call for Collaboration & RFC Review
+## 📢 Call for Collaboration & RFC Review
 
 This project is currently being drafted as an **IETF Internet-Draft (Standards Track)**. We are seeking core contributors, systems architects, cybersecurity researchers, and AI engineers to find edge cases, refine the cryptographic schemas, and help build the reference implementation.
 
@@ -332,7 +332,7 @@ Copyright Notice
          MUST NOT accept token re-use across separate session windows. A new
          DAT MUST be issued by the human principal upon expiration.
 
-ðŸ“˜ **Technical Reference Document:** For a complete breakdown of the Delegated Authority Token payload, cryptographic claims structure, and validation lifecycle, refer to the [Detailed DAT Specification](docs/DAT-SPECIFICATION.md).
+📘 **Technical Reference Document:** For a complete breakdown of the Delegated Authority Token payload, cryptographic claims structure, and validation lifecycle, refer to the [Detailed DAT Specification](docs/DAT-SPECIFICATION.md).
 
 4. Interoperability & System Optimization
 
@@ -428,7 +428,7 @@ Copyright Notice
    A compromised network observer could intercept a valid Layer 1 co-signed 
    payload and attempt a parallel execution replay against an alternative gateway
    within the expiration window. To mathematically block this, all gateway 
-   session nonces MUST bind cryptographically to the host gatewayâ€™s domain 
+   session nonces MUST bind cryptographically to the host gateway's domain 
    identifier.
 
 5.5. Cognitive Puppeteering Vulnerabilities (Prompt Injection)
