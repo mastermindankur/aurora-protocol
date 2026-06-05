@@ -2,7 +2,7 @@
 
 Welcome to the official open-source repository for the **AURORA Protocol**.
 
-AURORA is a next-generation, dual-layer network security protocol designed for the Agentic Web. While existing frameworks handle basic communication and semantic translation, they fail to prove if an endpoint is a genuinely autonomous machine or define who carries financial/legal liability for that machine's actions.
+AURORA is a next-generation, dual-layer network security protocol designed for the Agentic Web. While existing frameworks handle basic communication and semantic translation, they fail to prove that a payload originated from an attested software stack executing inside a trusted runtime environment, or cryptographically attribute which human principal authorized that machine's actions.
 
 AURORA solves both **The Puppet Problem** and **The Rogue Agent Problem** simultaneously by unifying hardware-isolated machine attestation with cryptographically bound human delegation.
 
@@ -16,17 +16,17 @@ AURORA solves both **The Puppet Problem** and **The Rogue Agent Problem** simult
 
 ### What trust decision becomes possible with AURORA that is impossible without it?
 
-In legacy web security, infrastructure can only verify Identity (*Who owns the key?*) or Syntax (*Is this valid JSON?*). It remains fundamentally blind to computational provenance and financial liability.
+In legacy web security, infrastructure can only verify Identity (*Who owns the key?*) or Syntax (*Is this valid JSON?*). It remains fundamentally blind to computational provenance and principal attribution.
 
 AURORA enables a completely new paradigm for programmatic trust decisions:
 
-> "A host system can safely allow an unauthenticated, fully autonomous machine to instantly execute high-value financial, data, or legal transactions because the protocol provides math-backed proof that the payload originated inside an un-hijacked hardware enclave, coupled with an immutable token proving exactly which human principal is legally and financially accountable for its real-world outcomes."
+> "A host system can safely allow an unauthenticated machine agent to execute high-value financial, data, or legal transactions because the protocol provides cryptographic proof that the payload originated from a software stack executing inside a verified, hardware-attested enclave — coupled with an immutable token that cryptographically attributes the transaction to a specific human principal — providing the attribution record from which legal accountability may be determined by the appropriate authority."
 
 ### Before vs. After AURORA
 
 | Scenario | Without AURORA (Blind Trust) | With AURORA (Verifiable Trust) |
 | :--- | :--- | :--- |
-| **High-Value Trades** | If an incoming API request presents a valid key to trade $10,000, a target gateway faces a dangerous blind spot. It cannot prove if a human adversary is puppeteering scripts to spoof a bot, nor can it map legal liability if the agent's software experiences a runtime logical failure. To protect itself, the gateway must drop the connection or enforce high-latency human verification blocks. | The connection is evaluated dynamically at the network edge. The hardware enclave co-signature confirms cryptographically verifiable runtime integrity, and the Delegated Authority Token (DAT) bounds the exact financial liabilities of the human principal. High-value machine commerce can safely transact without human-verification delays, reducing authorization latency from seconds to sub-100ms automated verification. |
+| **High-Value Trades** | If an incoming API request presents a valid key to trade $10,000, a target gateway faces a dangerous blind spot. It cannot prove if a human adversary is puppeteering scripts to spoof a bot, nor can it attribute which human principal authorized the action if the agent's software experiences a runtime logical failure. To protect itself, the gateway must drop the connection or enforce high-latency human verification blocks. | The connection is evaluated dynamically at the network edge. The hardware enclave co-signature confirms cryptographically verifiable runtime integrity, and the Delegated Authority Token (DAT) cryptographically attributes the transaction to a specific human principal and enforces their declared authorization scope. High-value machine commerce can safely transact without human-verification delays, reducing authorization latency from seconds to sub-100ms automated verification. |
 
 ---
 
@@ -64,11 +64,12 @@ Abstract
    
    Existing agent protocols enable communication syntax and identity 
    propagation; however, they fail to provide a standardized mechanism 
-   for proving that a network transaction or payload was autonomously 
-   generated, transmitted, and executed by a trusted AI instance, nor 
-   do they map clear boundaries of principal liability. AURORA solves 
-   this by unifying hardware-enclave-backed Autonomy Attestation with 
-   scoped, cryptographically bound Authority Delegation.
+   for proving that a network transaction or payload was generated and 
+   transmitted by a software agent executing within a verified, hardware-
+   attested runtime environment, nor do they map clear boundaries of 
+   principal attribution. AURORA solves this by unifying hardware-enclave-
+   backed Runtime Integrity Attestation with scoped, cryptographically 
+   bound Authority Delegation.
 
 Status of This Memo
 
@@ -111,8 +112,11 @@ Copyright Notice
       of a human principal without real-time human intervention.
 
    Principal: The human individual or corporate legal entity that
-      authorizes and bears ultimate legal and financial accountability
-      for an agent's actions.
+      authorizes an agent's actions and is cryptographically attributed
+      as the authorizing party for each transaction. Note: AURORA
+      establishes attribution, not legal liability. Determination of
+      legal liability from this attribution record is the domain of
+      applicable law and courts, not the protocol.
 
    Target Gateway: The network endpoint or host server that receives
       and validates AURORA protocol handshake payloads before granting
@@ -129,8 +133,9 @@ Copyright Notice
 
    Hardware-Anchored Proof Challenge for Autonomous Hosts (HAPCHA): The
       Layer 1 mechanism by which a gateway verifies that a response was
-      generated autonomously by a hardware enclave within a defined time
-      ceiling, without human-in-the-loop interference.
+      generated by a software agent executing within a hardware-attested
+      enclave, within a defined timing ceiling consistent with uninterrupted
+      machine execution.
 
    Attested Execution Duration (AED): The silicon-measured processing
       delta between nonce ingestion and payload generation, co-signed
@@ -150,39 +155,42 @@ Copyright Notice
    structural vulnerabilities introduced by autonomous machine agents: 
    The Puppet Problem and The Rogue Agent Problem.
 
-2.1. Problem Statement 1: The Puppet Problem (Autonomy Vulnerability)
+2.1. Problem Statement 1: The Puppet Problem (Runtime Integrity Vulnerability)
 
-   Current network endpoints cannot differentiate between a genuinely 
-   autonomous, hardware-isolated AI agent and a human adversary utilizing 
-   automated scripts to mimic a machine ("puppeteering"). 
+   Current network endpoints cannot differentiate between a software
+   agent executing within a verified hardware enclave and a human adversary
+   utilizing automated scripts to mimic machine-originated traffic
+   ("puppeteering").
 
-   Without a mechanism to prove machine execution, systems are exposed 
-   to highly advanced Sybil attacks, data interception, and man-in-the-
-   loop payload manipulation. Legacy CAPTCHAs stop uncoordinated bots 
-   from mimicking humans, but the internet lacks a standardized metric 
-   to stop unauthorized humans from injecting latency or manual steps 
-   into pure machine-to-machine interactions.
+   Without a mechanism to attest the runtime environment of an endpoint,
+   systems are exposed to Sybil attacks, data interception, and man-in-
+   the-loop payload manipulation. Legacy CAPTCHAs stop uncoordinated bots
+   from mimicking humans, but the internet lacks a standardized mechanism
+   to attest that a payload originated from a specific, verified software
+   stack — rather than from a human operator proxying requests through
+   automation scripts.
 
 2.2. Problem Statement 2: The Rogue Agent Problem (Authority Vulnerability)
 
    AI agents operate as dynamic code runtimes capable of planning, 
    invoking tools, and committing financial or computational assets. 
    When a machine endpoint initiates a binding contract, a target server 
-   cannot verify under whose ultimate authority or liability the machine 
-   is acting. 
+   cannot verify under whose authorization the machine is acting, nor
+   attribute the transaction to a specific human principal. 
 
-   If an agent suffers a logical loop or context injection and executes 
-   an unauthorized asset transfer, the receiving server cannot trace 
-   legal accountability. The internet has no standardized, cryptographically 
-   attenuated "Power of Attorney" token designed for software-mediated 
-   delegation.
+   If an agent suffers a logical loop or context injection and executes
+   an unauthorized asset transfer, the receiving server cannot attribute
+   the transaction to a specific authorizing human principal. The internet
+   has no standardized, cryptographically attenuated authorization token
+   designed for software-mediated delegation — analogous to a scoped
+   "Power of Attorney" — that would allow post-incident attribution.
 
 3. The AURORA Solution: Dual-Layer Protocol Specification
 
    AURORA addresses both problem vectors simultaneously using a unified, 
    two-key cryptographic handshake. A request is explicitly rejected 
-   unless both the Runtime Layer (Layer 1) and the Mandate Layer 
-   (Layer 2) are verified concurrently.
+   unless both the Runtime Integrity Layer (Layer 1) and the Mandate
+   Layer (Layer 2) are verified concurrently.
 
 3.1. Core Handshake Flow Overview
 
@@ -205,7 +213,7 @@ Copyright Notice
          |--- 5. Return: Signed Output + Enclave Report + DAT -->|
          |                             |                         |
          |                             |-- [6a. LAYER 1 CHECK]   |
-         |                             |   Autonomy Attestation  |
+         |                             |   Runtime Integrity     |
          |                             |   - AED: timing verify  |
          |                             |   - Enclave key verify  |
          |                             |   - Nonce binding check |
@@ -227,13 +235,18 @@ Copyright Notice
          |    (or fallback: json)      (Sec. 4.3)               |
          |                             |                         |
 
-3.2. Architecture Layer 1: Autonomy Attestation (Mitigating Problem 1)
+3.2. Architecture Layer 1: Runtime Integrity Attestation (Mitigating Problem 1)
 
-   To guarantee cryptographically verifiable machine provenance, the protocol
-   MUST enforce a rigorous, hardware-verified computational speed challenge
-   designated the Hardware-Anchored Proof Challenge for Autonomous Hosts
-   (HAPCHA). HAPCHA accounts natively for global network variances and is
-   composed of three interlocking mechanisms:
+   To provide cryptographically verifiable evidence that a payload
+   originated from a software agent executing within a hardware-attested
+   runtime environment, the protocol MUST enforce a rigorous computational
+   speed challenge designated the Hardware-Anchored Proof Challenge for
+   Autonomous Hosts (HAPCHA). HAPCHA does not claim to prove machine
+   consciousness or intent; it attests that the responding endpoint
+   executed within a measurable timing envelope consistent with
+   uninterrupted software execution inside a verified enclave. HAPCHA
+   accounts natively for global network variances and is composed of
+   three interlocking mechanisms:
 
    o  Attested Execution Duration (AED): Upon ingesting the gateway's time-
       bound cryptographic Nonce, the agent's Trusted Execution Environment
@@ -287,30 +300,39 @@ Copyright Notice
       Intel TDX, AMD SEV-SNP, or ARM TrustZone). The enclave chip MUST
       sign the output payload and attestation report using a key that is
       generated and stored exclusively within the enclave boundary, anchoring
-      the data to the physical hardware and proving that zero user-space
-      manipulation occurred during generation. Gateways MUST verify the
-      enclave signature against the platform's attestation service before
-      accepting any payload.
+      the data directly to the enclave hardware. This signature provides
+      evidence that the payload was generated by the declared software stack
+      within the attested enclave boundary. Gateways MUST verify the enclave
+      signature against the platform's attestation service before accepting
+      any payload. Note: enclave attestation proves the integrity of the
+      runtime environment, not the intent or autonomy of the executing agent.
 
 3.3. Architecture Layer 2: Authority Attestation (Mitigating Problem 2)
 
-   Once machine execution is validated by Layer 1, the agent MUST present
-   its Delegated Authority Token (DAT) to bind explicit operational scope
-   and legal accountability to the session. Gateways MUST reject any
-   connection that passes Layer 1 but omits a valid DAT.
+   Once runtime integrity is attested by Layer 1, the agent MUST present
+   its Delegated Authority Token (DAT) to cryptographically attribute the
+   session to an authorizing human principal and bind explicit operational
+   scope. The DAT establishes who authorized this agent to act and within
+   what boundaries — providing an attribution record from which legal
+   accountability may subsequently be determined by the appropriate
+   authority. Gateways MUST reject any connection that passes Layer 1
+   but omits a valid DAT.
 
    o  The Delegated Authority Token (DAT): The agent MUST transmit an
       immutable, cryptographically signed token originated directly by its
-      human principal or corporate legal entity. The DAT MUST be signed
+      human principal or corporate entity. The DAT MUST be signed
       using the principal's private key and MUST be bound to the agent's
       Enclave Public Key hash to prevent cross-machine token reuse
-      (see Section 5.6).
+      (see Section 5.6). The DAT cryptographically attributes the
+      session to the signing principal; it does not constitute legal
+      proof of liability, which is determined by applicable law.
 
    o  Scope Attenuation Claims: The DAT payload MUST enforce rigid operational
       boundaries that the gateway acts upon to restrict usage:
 
       * Principal Identifier: The verifiable identity of the entity
-         ultimately bearing transaction liability, expressed as one of:
+         cryptographically attributed as the authorizing party for this
+         transaction, expressed as one of:
          an X.509 Distinguished Name (DN) bound to a TLS client certificate,
          a corporate public key registered with a recognized Certificate
          Authority (CA), or a decentralized identifier (DID) for deployments
