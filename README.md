@@ -12,7 +12,7 @@ AURORA solves both **The Puppet Problem** and **The Rogue Agent Problem** simult
 
 > [!IMPORTANT]
 > **The Architectural Mandate:**
-> *"An agent should be able to prove its authority, scope, and runtime integrity."*
+> *“An agent should be able to prove its authority, scope, and runtime integrity.”*
 
 ### What trust decision becomes possible with AURORA that is impossible without it?
 
