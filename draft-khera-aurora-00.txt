@@ -1,48 +1,7 @@
-# AURORA: Agent Unification, Runtime, and Operational Responsibility Attestation
 
-Welcome to the official open-source repository for the **AURORA Protocol**.
 
-AURORA is a next-generation, dual-layer network security protocol designed for the Agentic Web. While existing frameworks handle basic communication and semantic translation, they fail to prove that a payload originated from an attested software stack executing inside a trusted runtime environment, or cryptographically attribute which human principal authorized that machine's actions.
 
-AURORA solves both **The Puppet Problem** and **The Rogue Agent Problem** simultaneously by unifying hardware-isolated machine attestation with cryptographically bound human delegation.
 
----
-
-## 🎯 The Core Trust Paradigm
-
-> [!IMPORTANT]
-> **The Architectural Mandate:**
-> *“An agent should be able to prove its authority, scope, and runtime integrity.”*
-
-### What trust decision becomes possible with AURORA that is impossible without it?
-
-In legacy web security, infrastructure can only verify Identity (*Who owns the key?*) or Syntax (*Is this valid JSON?*). It remains fundamentally blind to computational provenance and principal attribution.
-
-AURORA enables a completely new paradigm for programmatic trust decisions:
-
-> "A host system can safely allow an unauthenticated machine agent to execute high-value financial, data, or legal transactions because the protocol provides cryptographic proof that the payload originated from a software stack executing inside a verified, hardware-attested enclave — coupled with an immutable token that cryptographically attributes the transaction to a specific human principal — providing the attribution record from which legal accountability may be determined by the appropriate authority."
-
-### Before vs. After AURORA
-
-| Scenario | Without AURORA (Blind Trust) | With AURORA (Verifiable Trust) |
-| :--- | :--- | :--- |
-| **High-Value Trades** | If an incoming API request presents a valid key to trade $10,000, a target gateway faces a dangerous blind spot. It cannot prove if a human adversary is puppeteering scripts to spoof a bot, nor can it attribute which human principal authorized the action if the agent's software experiences a runtime logical failure. To protect itself, the gateway must drop the connection or enforce high-latency human verification blocks. | The connection is evaluated dynamically at the network edge. The hardware enclave co-signature confirms cryptographically verifiable runtime integrity, and the Delegated Authority Token (DAT) cryptographically attributes the transaction to a specific human principal and enforces their declared authorization scope. High-value machine commerce can safely transact without human-verification delays, reducing authorization latency from seconds to sub-100ms automated verification. |
-
----
-
-## 📢 Call for Collaboration & RFC Review
-
-This project is currently being drafted as an **IETF Internet-Draft (Standards Track)**. We are seeking core contributors, systems architects, cybersecurity researchers, and AI engineers to find edge cases, refine the cryptographic schemas, and help build the reference implementation.
-
-* **Status:** Pre-RFC / Alpha Draft 00
-* **License:** MIT (Open Source)
-* **Contributions:** Please open a GitHub Issue or Pull Request to suggest changes.
-
----
-
-## Technical Specification (Internet-Draft)
-
-```text
 Network Working Group                                           A. Khera
 Internet-Draft                                               5 June 2026
 Intended status: Standards Track                                        
@@ -91,6 +50,13 @@ Copyright Notice
 
    Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
+
+
+
+Khera                    Expires 7 December 2026                [Page 1]
+
+Internet-Draft                   AURORA                        June 2026
+
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
@@ -141,6 +107,13 @@ Table of Contents
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  14
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
 
+
+
+Khera                    Expires 7 December 2026                [Page 2]
+
+Internet-Draft                   AURORA                        June 2026
+
+
 1.  Introduction
 
    As autonomous AI agents migrate from isolated testing environments to
@@ -189,6 +162,13 @@ Table of Contents
    Delegated Authority Token (DAT)  An immutable, cryptographically
       signed token issued by a human principal that encodes the agent's
       operational scope, financial limits, and expiry.
+
+
+
+Khera                    Expires 7 December 2026                [Page 3]
+
+Internet-Draft                   AURORA                        June 2026
+
 
    Hardware-Anchored Proof Challenge for Autonomous Hosts (HAPCHA)  The
       Layer 1 mechanism by which a gateway verifies that a response was
@@ -239,6 +219,13 @@ Table of Contents
    cannot verify under whose authorization the machine is acting, nor
    attribute the transaction to a specific human principal.
 
+
+
+Khera                    Expires 7 December 2026                [Page 4]
+
+Internet-Draft                   AURORA                        June 2026
+
+
    If an agent suffers a logical loop or context injection and executes
    an unauthorized asset transfer, the receiving server cannot attribute
    the transaction to a specific authorizing human principal.  The
@@ -258,13 +245,50 @@ Table of Contents
 
    The AURORA protocol execution sequence flows as follows:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Khera                    Expires 7 December 2026                [Page 5]
+
+Internet-Draft                   AURORA                        June 2026
+
+
    Connecting Agent             Target Gateway             Enclave Chip
          |                             |                         |
          |--- 1. Initiate Session ---->|                         |
          |     + DAT attached          |                         |
          |     + aurora-accept:        |                         |
          |       [protobuf, json-rpc,  |                         |
-         |        json]                |                         |
+         |        json]  (Sec. 4.1)    |                         |
          |                             |                         |
          |<-- 2. Time-Bound Nonce -----|                         |
          |                                                       |
@@ -293,8 +317,8 @@ Table of Contents
          |                        /          \                   |
          |<-- 7a. ACCEPT ---------            ------> 7b. REJECT |
          |    + aurora-content-type:               Layer fault   |
-         |      negotiated format                  + reason code |
-         |    (or fallback: json)                                |
+         |      negotiated format      (Sec. 4.2)  + reason code |
+         |    (or fallback: json)      (Sec. 4.3)               |
          |                             |                         |
 
 3.2.  Architecture Layer 1: Runtime Integrity Attestation (Mitigating
@@ -306,6 +330,14 @@ Table of Contents
    computational speed challenge designated the Hardware-Anchored Proof
    Challenge for Autonomous Hosts (HAPCHA).  HAPCHA does not claim to
    prove machine consciousness or intent; it attests that the responding
+
+
+
+Khera                    Expires 7 December 2026                [Page 6]
+
+Internet-Draft                   AURORA                        June 2026
+
+
    endpoint executed within a measurable timing envelope consistent with
    uninterrupted software execution inside a verified enclave.  HAPCHA
    accounts natively for global network variances and is composed of
@@ -354,6 +386,14 @@ Table of Contents
       (RECOMMENDED default: 10ms) that accounts for sub-millisecond
       clock drift between the agent's TEE hardware clock and the
       gateway's NTP-synchronized clock [RFC5905], as well as transient
+
+
+
+Khera                    Expires 7 December 2026                [Page 7]
+
+Internet-Draft                   AURORA                        June 2026
+
+
       network queuing variance.  Operators MAY increase epsilon for
       high-jitter network paths (e.g., satellite links) but SHOULD NOT
       exceed 50ms to preserve the anti-puppeteering guarantee.
@@ -399,6 +439,16 @@ Table of Contents
    *  *Scope Attenuation Claims*: The DAT payload MUST enforce rigid
       operational boundaries that the gateway acts upon to restrict
       usage:
+
+
+
+
+
+
+Khera                    Expires 7 December 2026                [Page 8]
+
+Internet-Draft                   AURORA                        June 2026
+
 
       -  *Principal Identifier*: The verifiable identity of the entity
          cryptographically attributed as the authorizing party for this
@@ -449,6 +499,13 @@ aurora-accept: application/x-protobuf, application/json-rpc, application/json
    client requires standard HTTP/HTML responses and MUST NOT attempt a
    format switch.
 
+
+
+Khera                    Expires 7 December 2026                [Page 9]
+
+Internet-Draft                   AURORA                        June 2026
+
+
 4.2.  Gateway Format Switch Signal
 
    Upon completing successful dual-layer verification (Steps 6a and 6b),
@@ -493,6 +550,17 @@ aurora-accept: application/x-protobuf, application/json-rpc, application/json
    the TCB security level against real-time hardware status providers.
    Outdated or unpatched silicon firmware layers MUST trigger an
    immediate, graceful connection step-down.
+
+
+
+
+
+
+
+Khera                    Expires 7 December 2026               [Page 10]
+
+Internet-Draft                   AURORA                        June 2026
+
 
 5.3.  Authority Token Revocation Lifecycle
 
@@ -542,6 +610,14 @@ aurora-accept: application/x-protobuf, application/json-rpc, application/json
    agent's immutable base system prompt and system parameter hashes
    directly alongside the payload execution trace.
 
+
+
+
+Khera                    Expires 7 December 2026               [Page 11]
+
+Internet-Draft                   AURORA                        June 2026
+
+
 5.6.  Cryptographic Cross-Layer Token Binding
 
    If a Delegated Authority Token (DAT) is decoupled from its original
@@ -588,6 +664,16 @@ aurora-accept: application/x-protobuf, application/json-rpc, application/json
    This section records the implementation status of the AURORA protocol
    in accordance with [RFC7942].
 
+
+
+
+
+
+Khera                    Expires 7 December 2026               [Page 12]
+
+Internet-Draft                   AURORA                        June 2026
+
+
    As of the date of this Internet-Draft, no production implementations
    of the full AURORA dual-layer handshake exist.  The following
    components are under active development:
@@ -624,10 +710,6 @@ aurora-accept: application/x-protobuf, application/json-rpc, application/json
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
-              (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
-              <https://www.rfc-editor.org/info/rfc7519>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -635,6 +717,18 @@ aurora-accept: application/x-protobuf, application/json-rpc, application/json
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
+
+   [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
+              (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
+              <https://www.rfc-editor.org/info/rfc7519>.
+
+
+
+
+Khera                    Expires 7 December 2026               [Page 13]
+
+Internet-Draft                   AURORA                        June 2026
+
 
 9.2.  Informative References
 
@@ -652,4 +746,39 @@ Author's Address
 
    Ankur Khera
    Email: ankurkhera@iitdalumni.com
-```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Khera                    Expires 7 December 2026               [Page 14]
